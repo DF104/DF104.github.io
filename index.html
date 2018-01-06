@@ -285,7 +285,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/01/06/SSL-TLS/" itemprop="url">SSL/TLS安全协议的</a></h1>
+                <a class="post-title-link" href="/2018/01/06/SSL-TLS/" itemprop="url">SSL/TLS安全协议</a></h1>
         
 
         <div class="post-meta">
@@ -336,93 +336,19 @@
 
       
         
-          
-            <h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p><strong>SSL（Secure Sockets Layer安全套接层）</strong> 及其继任者<strong>传输层安全TLS（Transport Layer Security）</strong> 是为网络通信提供安全及数据完整性的一种安全协议，工作ISO的OSI七层网络模型的传输层</p>
+          <h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p><strong>SSL（Secure Sockets Layer安全套接层）</strong> 及其继任者<strong>传输层安全TLS（Transport Layer Security）</strong> 是为网络通信提供安全及数据完整性的一种安全协议，工作ISO的OSI七层网络模型的传输层</p>
 <p><strong>SSL</strong> ：为网络通信提供安全及数据完整性的协议</p>
 <p><strong>TLS</strong> ：基于SSL之上的通用化协议，为SSL协议的继承者</p>
 <p>SSL最早为NetScape所研发，用于保证Internet上的数据传输安全，保证数据在传输过程中不会被截取和窃听通用规格为40bit，但是也有128bit的更高安全标准</p>
 <p>当前使用的版本为3.0版本，广泛用于Web浏览器与服务器自恋的身份认证和加密数据传输(HTTPS）</p>
 <p>本文主要应用SSL实现</p>
-<h4 id="SSL协议的分层"><a href="#SSL协议的分层" class="headerlink" title="SSL协议的分层"></a>SSL协议的分层</h4><p>SSL协议分为两层</p>
-<p><img src="https://ws1.sinaimg.cn/large/786be24dgy1fn6wo0ziyxj20pw0bsdgg.jpg" alt="SSL的协议层次"></p>
-<h5 id="SSL记录协议（SSL-Record-Protocal）"><a href="#SSL记录协议（SSL-Record-Protocal）" class="headerlink" title="SSL记录协议（SSL Record Protocal）"></a>SSL记录协议（SSL Record Protocal）</h5><p>建立在可靠连接之上（一般为TCP）为高层协议提供数据封装、压缩、加密等基本功能的支持。</p>
-<p><img src="https://ws1.sinaimg.cn/large/786be24dgy1fn6wprgzyrj20em05w74w.jpg" alt="SSL记录协议的职能"></p>
-<p>原始的数据被分割成多个较短的片段，然后对每个片段分别进行压缩处理，之后这些经过压缩的每个片段会分别被加上消息验证码（为了保证数据的完整性，使用了单向的HASH函数）。然后将压缩的片段和消息认证码合并成一条数据通过<strong>对称密码</strong>进行加密。</p>
-<h5 id="SSL握手协议-（SSL-Handshake-Protocal）"><a href="#SSL握手协议-（SSL-Handshake-Protocal）" class="headerlink" title="SSL握手协议 （SSL Handshake Protocal）"></a>SSL握手协议 （SSL Handshake Protocal）</h5><p>建立在SSL记录协议之上，用于在实际数据传输开始之前，通讯双方进行身份认证、协商加密算法、交换加密秘钥等。</p>
-<ol>
-<li><strong>握手协议</strong> 负责生成共享秘钥和交换证书（是SSL握手协议的一部分，非SSL握手协议，如上图）</li>
-<li><strong>密码规则变更协议</strong> 负责密码切换的同步，传达密码需要变更的信号</li>
-<li><strong>警告协议</strong> 负责在错误发生后将错误发送到对方</li>
-<li><strong>应用数据协议</strong> 负责在通信双方传输应用数据（如HTTP）</li>
-</ol>
-<h3 id="提供的服务"><a href="#提供的服务" class="headerlink" title="提供的服务"></a>提供的服务</h3><ol>
-<li>认证用户和服务器，确保数据发送到正确的客户机和服务器</li>
-<li>加密数据以防止数据中途被窃听</li>
-<li>维护数据的完整性，确保数据在传输过程中不会被改变</li>
-</ol>
-<h3 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h3><h4 id="服务器认证阶段"><a href="#服务器认证阶段" class="headerlink" title="服务器认证阶段"></a>服务器认证阶段</h4><ol>
-<li>Client向Server发送一个开始信息“Hello”以便开始一个新的会话连接</li>
-<li>Server根据Client的信息确定是否需要生成新的主秘钥，如需要则Sever在响应”Hello”信息时将包含生成主秘钥所需要的信息；</li>
-<li>Client根据收到的Server响应消息，产生一个主秘钥，并使用服务器的PublicKey加密后传给Server</li>
-<li>Server回复该主秘钥，并返回给Client一个用主秘钥认证的信息，以此让Client认证Server</li>
-</ol>
-<h4 id="用户认证阶段"><a href="#用户认证阶段" class="headerlink" title="用户认证阶段"></a>用户认证阶段</h4><p><em>Tips：在此阶段开始前，Server已经通过了客户认证，这一阶段的目的是让Server认证Client</em></p>
-<ol>
-<li>经认证的的Server发送一个提问给Client</li>
-<li>Client返回使用数字签名后的提问和它的公钥，从而向服务器提供认证</li>
-</ol>
-<h4 id="详细过程"><a href="#详细过程" class="headerlink" title="详细过程"></a>详细过程</h4><ol>
-<li><p>协商算法</p>
-<p><img src="https://ws1.sinaimg.cn/large/786be24dgy1fn6x24tjwpj20e408wdhj.jpg" alt="协商算法"></p>
-<ul>
-<li><strong>RNC</strong>  (Random Number Clilent  客户端的随机数)</li>
-<li><strong>RNS</strong> （Random Number Server服务器的随机数）</li>
-<li><strong>②④</strong> 的数据集合称为<strong>密码套件</strong> </li>
-<li><strong>算法信息</strong> 包含Client和Server所支持的加密算法 以及要使用的加密算法</li>
-</ul>
-</li>
-<li><p>验证证书（Client验证Server）</p>
-<p><img src="https://ws1.sinaimg.cn/large/786be24dgy1fn6x9u0c8gj20hc095abr.jpg" alt="验证证书"></p>
-<ul>
-<li>认证机构就是第三方认证机构<strong>CA</strong> </li>
-<li>上述是<strong>单向认证</strong> 的请求</li>
-</ul>
-</li>
-<li><p>验证证书（服务器验证客户端）</p>
-<p><img src="https://ws1.sinaimg.cn/large/786be24dgy1fn6xdovt2cj20h008ujt6.jpg" alt="客户端验证服务器"></p>
-<ul>
-<li>上述是<strong>双向认证</strong> 的交互</li>
-<li><strong>单向认证是必须</strong> 的，双向认证根据业务的需求选择是否要进行</li>
-</ul>
-</li>
-<li><p>构建主秘钥 Master Secret</p>
-<p><img src="https://ws1.sinaimg.cn/large/786be24dgy1fn6xgka917j20fg08sac3.jpg" alt="构建主秘钥"></p>
-<ul>
-<li><strong>PMS</strong> （Primary Master Secret）预备主秘钥</li>
-<li><strong>服务器</strong> 的公钥是在Client对服务器进行验证时，Server发送给Client的证书当中</li>
-<li><strong>MS</strong> （Master Secret）主秘钥 用于之后会话秘钥的构建</li>
-<li><strong>RNC</strong> （Random Number Clilent 客户端的随机数）在协商算法阶段发送的</li>
-<li><strong>RNS</strong> （Random Number Server服务器的随机数）在协商算法阶段发送的</li>
-<li>RNC和RNS在传输过程中是<strong>没有被加密</strong>的 有可能被窃听</li>
-</ul>
-</li>
-<li><p>构建会话秘钥</p>
-<p><img src="https://ws1.sinaimg.cn/large/786be24dgy1fn6xnfkq1uj20ff08oq5k.jpg" alt="构建会话秘钥"></p>
-<ul>
-<li><strong>MS</strong> （Master Secret） 在构建主秘钥阶段产生的</li>
-<li><strong>终止握手</strong> 指终止SSL握手协议的过程</li>
-</ul>
-</li>
-<li><p>正式加密交互</p>
-<p><img src="https://ws1.sinaimg.cn/large/786be24dgy1fn6xshmqkyj20g408mgnx.jpg" alt="正式加密交互"></p>
-<ul>
-<li>需要说明的上述6步如果在过程中产生了错误，那么将重新开始上述6步的过程</li>
-<li>对于使用的加密方式，MS也就是主秘钥的构建使用的是<strong>非对称加密</strong> 如<strong>RSA、ECC</strong>等，会话阶段使用的会话秘钥是<strong>对称加密</strong> </li>
-</ul>
-</li>
-</ol>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/01/06/SSL-TLS/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
