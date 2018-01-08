@@ -100,7 +100,7 @@
 <meta property="og:url" content="http://yoursite.com/2018/01/07/Keytool/index.html">
 <meta property="og:site_name" content="DF104&#39;S  HOME">
 <meta property="og:description" content="基本概念 keytool 是个密钥和证书管理工具。它使用户能够管理自己的公钥/私钥对及相关证书，用于（通过数字签名）自我认证（用户向别的用户/服务认证自己）或数据完整性以及认证服务。它还允许用户储存他们的通信对等者的公钥（以证书形式）。">
-<meta property="og:updated_time" content="2018-01-06T17:36:39.354Z">
+<meta property="og:updated_time" content="2018-01-06T17:48:38.217Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java Keytool工具的使用">
 <meta name="twitter:description" content="基本概念 keytool 是个密钥和证书管理工具。它使用户能够管理自己的公钥/私钥对及相关证书，用于（通过数字签名）自我认证（用户向别的用户/服务认证自己）或数据完整性以及认证服务。它还允许用户储存他们的通信对等者的公钥（以证书形式）。">
@@ -402,10 +402,8 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">keytool -list -v -keystore $JAVA_HOME/jre/lib/security/cacerts</div></pre></td></tr></table></figure>
 </li>
 <li><p>导入新的CA到信任证书</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">keytool -import -trustcacerts -file /path/to/ca/ca.pem -alias CA_ALIAS -keystore $JAVA_HOME/jre/lib/security/cacerts</div></pre></td></tr></table></figure>
-</li>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">keytool -import -trustcacerts -file /path/to/ca/ca.pem -alias CA_ALIAS -keystore $JAVA_HOME/jre/lib/security/cacerts</div></pre></td></tr></table></figure></li>
 </ol>
-<p>## </p>
 
       
     </div>
@@ -440,8 +438,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/01/07/Openssl/" rel="prev" title="Openssl详解">
-                Openssl详解 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/01/07/Openssl/" rel="prev" title="OpenSSL详解">
+                OpenSSL详解 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
