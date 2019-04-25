@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Oracle," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="本文档在完善SqlLoader工具的使用方法，提升导入效率，慢更 最后更新时间2019.4.25">
+<meta name="keywords" content="Oracle">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SqlLoader的使用方式">
+<meta property="og:url" content="http://yoursite.com/2019/04/25/SqlLoader的使用方式/index.html">
+<meta property="og:site_name" content="瞳矇">
+<meta property="og:description" content="本文档在完善SqlLoader工具的使用方法，提升导入效率，慢更 最后更新时间2019.4.25">
+<meta property="og:updated_time" content="2019-04-25T03:13:55.218Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SqlLoader的使用方式">
+<meta name="twitter:description" content="本文档在完善SqlLoader工具的使用方法，提升导入效率，慢更 最后更新时间2019.4.25">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/04/25/SqlLoader的使用方式/"/>
+
+
+
+
+
+  <title>SqlLoader的使用方式 | 瞳矇</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6031694ddced3d853aa2a249541ce520";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">瞳矇</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/25/SqlLoader的使用方式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="DF104">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="瞳矇">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">SqlLoader的使用方式</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-25T11:06:45+08:00">
+                2019-04-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本文档在完善SqlLoader工具的使用方法，提升导入效率，慢更</p>
+<p>最后更新时间2019.4.25</p>
+<a id="more"></a>
+<blockquote>
+<p>部分内容引用于CSDN博主—<a href="https://me.csdn.net/u011364306" target="_blank" rel="external">梓沐</a></p>
+</blockquote>
+<h3 id="创建控制文件"><a href="#创建控制文件" class="headerlink" title="创建控制文件"></a>创建控制文件</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">LOAD DATA</div><div class="line">CHARACTERSET ZHS16GBK #解决编码问题，否则导入中文数据可能出现一些莫名其妙的报错</div><div class="line">INFILE '1.csv' #源数据文件,可以同时指定多个</div><div class="line">INSERT INTO TABLE "SQYJKJSJB" #需要导入的表名,INSERT为默认方法</div><div class="line">FIELDS TERMINATED BY ',' #数据以逗号做分隔符</div><div class="line">OPTIONALLY ENCLOSED BY '"'</div><div class="line">TRAILING NULLCOLS #如果存在空数据，自动为NULL</div><div class="line">(</div><div class="line">  virtual_column FILLER,#可选配置，跳过由PL/SQL生成的第一列序列号</div><div class="line">  ID,</div><div class="line">  RYBH,</div><div class="line">  SFZJHM,</div><div class="line">  XM,</div><div class="line">  CBSJ,</div><div class="line">  JE,</div><div class="line">  JYLX,</div><div class="line">  TSRY,</div><div class="line">  KKSJ,</div><div class="line">  HJSZD,</div><div class="line">  SQDS</div><div class="line">)</div><div class="line"></div><div class="line">BEGINDATA   #可选配置，数据从这里开始   </div><div class="line"></div><div class="line">ID（或者当为虚拟数据无列名可以不填）,USER_ID,USER_NAME,LOGIN_TIMES,LAST_LOGIN  </div><div class="line"></div><div class="line">1,1,Unmi,3,2009-1-5 20:34  </div><div class="line"></div><div class="line">2,2,Fantasia,5,2008-10-15  </div><div class="line"></div><div class="line">3,3,隔叶黄莺,8,2009-1-2  </div><div class="line"></div><div class="line">4,4,Kypfos,  NULL,NULL</div><div class="line"></div><div class="line">5,5,不知秋,1,2008-12-23</div></pre></td></tr></table></figure>
+<h3 id="导入语句"><a href="#导入语句" class="headerlink" title="导入语句"></a>导入语句</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sqlldr userid=sbf_hx/grsds1234@qzhx01 control=1.ctl rows=5000 bindsize=10485760 skip=1</div></pre></td></tr></table></figure>
+<h3 id="导入方式"><a href="#导入方式" class="headerlink" title="导入方式"></a>导入方式</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">APPEND ：原先的表有数据 就加在后面 </div><div class="line">INSERT：装载空表 如果原先的表有数据 sqlloader会停止 默认值 </div><div class="line">REPLACE ：原先的表有数据 原先的数据会全部删除 </div><div class="line">TRUNCATE ：指定的内容和replace的相同 会用truncate语句删除现存数据</div></pre></td></tr></table></figure>
+<h3 id="sqlloader命令帮助信息"><a href="#sqlloader命令帮助信息" class="headerlink" title="sqlloader命令帮助信息"></a>sqlloader命令帮助信息</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">[oracle@cancer ~]$ sqlldr</div><div class="line">SQL*Loader: Release 11.2.0.4.0 - Production on Tue Jan 26 16:54:30 2016</div><div class="line">Copyright (c) 1982, 2011, Oracle and/or its affiliates.  All rights reserved.</div><div class="line">Usage: SQLLDR keyword=value [,keyword=value,...]</div><div class="line">Valid Keywords:</div><div class="line"></div><div class="line">------</div><div class="line"></div><div class="line">userid                       ORACLE 用户名/口令</div><div class="line">control                      控制文件名 </div><div class="line">log                          日志文件名 </div><div class="line">bad                          错误文件名 </div><div class="line">data                         数据文件名 </div><div class="line">discard                      废弃文件名</div><div class="line">discardmax                   允许废弃的文件的数目(默认全部)</div><div class="line">skip                         要跳过的逻辑记录的数目(默认0) </div><div class="line">load                         要加载的逻辑记录的数目(默认全部)</div><div class="line">errors                       允许的错误的数目    (默认50)</div><div class="line">rows                         常规路径绑定数组中或直接路径保存数据间的行数 (常规路径默认64,直接路径默认全部)</div><div class="line">bindsize                     常规路径绑定数组的大小(默认256000.单位字节)</div><div class="line">silent                       运行过程中隐藏消息(标题,反馈,错误,废弃,分区)</div><div class="line">direct                       使用直接路径(默认FALSE)</div><div class="line">parfile                      参数文件：包含参数说明的文件的名称</div><div class="line">parallel                     执行并行加载(默认FALSE)</div><div class="line">file                         要从以下对象中分配区的文件</div><div class="line"></div><div class="line">------</div><div class="line"></div><div class="line">skip_unusable_indexes        不允许/允许使用无用的索引(默认FALSE)</div><div class="line">skip_index_maintenance       不维护索引，将受到影响的索引标记为失效(默认FALSE)</div><div class="line">commit_discontinued          提交加载中断时已加载的行(默认FALSE) </div><div class="line">readsize                     读取缓冲区的大小    (默认1048576)</div><div class="line">external_table               使用外部表进行加栽：NOT_USED,GENERATE_ONLY,EXECUTE (默认 NOT_USED)</div><div class="line">columnarrayrows              直接路径列数组的行数(默认5000) </div><div class="line">streamsize                   直接路径流缓冲区的大小(默认256000,单位字节) </div><div class="line">multithreading               在直接路径中使用多线程 </div><div class="line">resumable                    启用或禁用当前的可恢复会话(默认FALSE) </div><div class="line">resumable_name               有助于标识可恢复语句的文本字符串 </div><div class="line">resumable_timeout            RESUMABLE 的等待时间(以秒计)(默认 7200) </div><div class="line">date_cache                   日期转换高速缓存的大小(以条目计)(默认1000)</div><div class="line">注意：SQLLDR的参数组合比较灵活，即可以直接写值，也可以写关键字=值。</div><div class="line">例如：sqlldr scott/tiger foo 和 sqlldr control=foo userid=scott/tiger 两种写法均有效。</div></pre></td></tr></table></figure>
+<h3 id="导入提速"><a href="#导入提速" class="headerlink" title="导入提速"></a>导入提速</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">value used for ROWS parameter changed from 640 to 198</div><div class="line">Table OBJECTS:</div><div class="line">  1739580 Rows successfully loaded.</div><div class="line">  0 Rows not loaded due to data errors.</div><div class="line">  0 Rows not loaded because all WHEN clauses were failed.</div><div class="line">  0 Rows not loaded because all fields were null.</div><div class="line"></div><div class="line">Space allocated for bind array:                 255420 bytes(198 rows)</div><div class="line">Read   buffer bytes: 1048576</div><div class="line"></div><div class="line">Total logical records skipped:          0</div><div class="line">Total logical records read:       1739580</div><div class="line">Total logical records rejected:         0</div><div class="line">Total logical records discarded:        0</div><div class="line"></div><div class="line">Run began on Thu Jan 28 13:23:50 2016</div><div class="line">Run ended on Thu Jan 28 13:29:36 2016</div><div class="line"></div><div class="line">Elapsed time was:     00:05:45.50</div></pre></td></tr></table></figure>
+<p>由于640行所占用的空间己经超出了参数BINDSIZE的默认值，因此自动修改到最大可承受的198行，这说明BINDSIZE参数默认值偏小，不过即使是这样，我们看到实际执行时间也被缩短到了5分钟，提高了一倍以上， 再进一步调整BINDSIZE参数值，默认为256K,我们将其修改为10M(1024KB<em>1024</em>10=10485760),同时将一次加载的行数提高到5000</p>
+<p><strong>再次看导入日志</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">Table OBJECTS:</div><div class="line">  1739580 Rows successfully loaded.</div><div class="line">  0 Rows not loaded due to data errors.</div><div class="line">  0 Rows not loaded because all WHEN clauses were failed.</div><div class="line">  0 Rows not loaded because all fields were null.</div><div class="line"> </div><div class="line">  Date conversion cache disabled due to overflow (default size: 1000)</div><div class="line"> </div><div class="line">Bind array size not used in direct path.</div><div class="line">Column array  rows :    5000</div><div class="line">Stream buffer bytes:  256000</div><div class="line">Read   buffer bytes: 1048576</div><div class="line"> </div><div class="line">Total logical records skipped:          0</div><div class="line">Total logical records read:       1739580</div><div class="line">Total logical records rejected:         0</div><div class="line">Total logical records discarded:        0</div><div class="line">Total stream buffers loaded by SQL*Loader main thread:      427</div><div class="line">Total stream buffers loaded by SQL*Loader load thread:      262</div><div class="line"> </div><div class="line">Run began on Thu Jan 28 13:59:32 2016</div><div class="line">Run ended on Thu Jan 28 14:01:30 2016</div><div class="line"> </div><div class="line">Elapsed time was:     00:01:27.79</div></pre></td></tr></table></figure>
+<h3 id="使用Direct参数，让速度更快一点"><a href="#使用Direct参数，让速度更快一点" class="headerlink" title="使用Direct参数，让速度更快一点"></a>使用Direct参数，让速度更快一点</h3><p>前面的参数都是基于常规路径加载，下面通过直接路径加载，所有参数默认，只打开直接路径加载参数</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[oracle@cancer sqlldr]$ sqlldr scott/tiger control=ldr_object.ctl direct=true</div><div class="line">Load completed - logical record count 1739580.</div></pre></td></tr></table></figure>
+<h3 id="同一数据导入不同表"><a href="#同一数据导入不同表" class="headerlink" title="同一数据导入不同表"></a>同一数据导入不同表</h3><p>需求是将MGR开头的记录导入到Manager表，以BON开头的记录导入到BONUS表，其他记录存放到废弃文件中，创建控制文件如下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash">控制文件</span></div><div class="line">[oracle@cancer ~]$ cat ldr_case9.ctl</div><div class="line">LOAD DATA</div><div class="line">INFILE ldr_case9.dat</div><div class="line">DISCARDFILE ldr_case9.dsc</div><div class="line">TRUNCATE </div><div class="line">INTO TABLE BONUS</div><div class="line">WHEN TAB='BON'</div><div class="line">(</div><div class="line">TAB FILLER POSITION(1:3),</div><div class="line">ENAME POSITION(6:10),</div><div class="line">JOB POSITION(*+1:20),</div><div class="line">SAL POSITION(*+3:27)</div><div class="line">)</div><div class="line">INTO TABLE MANAGER</div><div class="line">WHEN TAB='MGR'</div><div class="line">(</div><div class="line">TAB FILLER POSITION(1:3),</div><div class="line">MGRNO POSITION(6:7),</div><div class="line">MNAME POSITION(9:15),</div><div class="line">JOB POSITION(*+2:30)</div></pre></td></tr></table></figure>
+<h3 id="数据文件中的列比要导入的表中列多"><a href="#数据文件中的列比要导入的表中列多" class="headerlink" title="数据文件中的列比要导入的表中列多"></a>数据文件中的列比要导入的表中列多</h3><p>如果数据文件中的列比要导入的表中的列少，处理的时候可能麻烦些，多了反倒更简单，针对不同情况，一般有以下两种处理方式：<br>方式一：修改数据文件，将多余的数据删除，不过以这种方式处理，小数据量时还可行，一旦数据文件较大，几百甚至上千兆，修改数据文件耗时耗力。<br>方式二：使用sqlldr中控制文件FILLER来排除不需要的列<br>1）演示数据文件如下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">--数据文件</div><div class="line">[oracle@cancer ~]$ cat ldr_case6.dat </div><div class="line">SMITH    7369   CLERK      1020   20</div><div class="line">ALLEN    7499   SALESMAN   1930   30</div><div class="line">WARD     7521   SALESMAN   1580   30</div><div class="line">JONES    7566   MANAGER    3195   20</div><div class="line">MARTIN   7654   SALESMAN   1580   30</div><div class="line">BLAKE    7698   MANAGER    3180   30</div><div class="line">CLARK    7782   MANAGER    2172   10</div><div class="line">SCOTT    7788   ANALYST    3220   20</div><div class="line">KING     7839   PRESIDENT  4722   10</div><div class="line">TURNER   7844   SALESMAN   1830   30</div><div class="line">ADAMS    7876   CLERK      1320   20</div><div class="line">JAMES    7900   CLERK      1280   30</div><div class="line">FORD     7902   ANALYST    3220   20</div><div class="line">MILLER   7934   CLERK      1022   10</div></pre></td></tr></table></figure>
+<p>此时我们的需求希望我们导入第1、3、4列而跳过2、5列，创建控制文件如下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">--控制文件</div><div class="line">[oracle@cancer ~]$ cat ldr_case6.ctl</div><div class="line">LOAD DATA</div><div class="line">INFILE ldr_case6.dat</div><div class="line">TRUNCATE INTO TABLE BONUS</div><div class="line">(</div><div class="line">ENAME position(1:6),</div><div class="line">TCOL FILLER position(10:13),</div><div class="line">JOB position(17:25),</div><div class="line">SAL position(28:31)</div><div class="line">)</div></pre></td></tr></table></figure>
+<p>sqlldr的控制文件中对列定义时支持FILLER关键字，可以用来指定过滤列，在上述控制文件中，我们就使用该关键字来过滤列，相当于第10到第13列之间的数据不导入。<br>事实上由于此处为定长字串，我们在控制文件中指定的position参数，己经限定了读取的内容，你甚至可以删除控制文件中TCOL FILLER position (10:13)那行。<br>执行sqlldr命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">--sqlldr命令</div><div class="line">[oracle@cancer ~]$ sqlldr scott/tiger control=ldr_case6.ctl </div><div class="line">Commit point reached - logical record count 14</div><div class="line"></div><div class="line">--查询结果</div><div class="line"><span class="meta">SQL&gt;</span><span class="bash"> select * from bonus;</span></div><div class="line">ENAME	   JOB		    SAL       COMM</div><div class="line"></div><div class="line">------</div><div class="line"></div><div class="line">SMITH	   CLERK	   1020</div><div class="line">ALLEN	   SALESMAN	   1930</div><div class="line">WARD	   SALESMAN	   1580</div><div class="line">JONES	   MANAGER	   3195</div><div class="line">MARTIN	   SALESMAN	   1580</div><div class="line">BLAKE	   MANAGER	   3180</div><div class="line">CLARK	   MANAGER	   2172</div><div class="line">SCOTT	   ANALYST	   3220</div><div class="line">KING	   PRESIDENT   4722</div><div class="line">TURNER	   SALESMAN	   1830</div><div class="line">ADAMS	   CLERK	   1320</div><div class="line"></div><div class="line">ENAME	   JOB		    SAL       COMM</div><div class="line"></div><div class="line">------</div><div class="line"></div><div class="line">JAMES	   CLERK	   1280</div><div class="line">FORD	   ANALYST	   3220</div><div class="line">MILLER	   CLERK	   1022</div><div class="line"></div><div class="line">14 rows selected.</div></pre></td></tr></table></figure>
+<p>2）如果数据文件中字符串不是定长格式，而是通过分隔符来处理的，那控制文件中就需要注意，如数据文件如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">--数据文件</div><div class="line">[oracle@cancer ~]$ cat ldr_case7.dat </div><div class="line">SMITH,7369,CLERK,1020,20</div><div class="line">ALLEN,7499,SALESMAN,1930,30</div><div class="line">WARD,7521,SALESMAN,1580,30</div><div class="line">JONES,7566,MANAGER,3195,20</div><div class="line">MARTIN,7654,SALESMAN,1580,30</div><div class="line">BLAKE,7698,MANAGER,3180,30</div><div class="line">CLARK,7782,MANAGER,2172,10</div><div class="line">SCOTT,7788,ANALYST,3220,20</div><div class="line">KING,7839,PRESIDENT,4722,10</div><div class="line">TURNER,7844,SALESMAN,1830,30</div><div class="line">ADAMS,7876,CLERK,1320,20</div><div class="line">JAMES,7900,CLERK,1280,30</div><div class="line">FORD,7902,ANALYST,3220,20</div><div class="line">MILLER,7934,CLERK,1022,10</div></pre></td></tr></table></figure>
+<p>此时创建控制文件时，控制文件中就必须制定FILLER，不然列中的值可能不对应，创建控制文件如下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">--控制文件</div><div class="line">[oracle@cancer ~]$ vim ldr_case7.ctl </div><div class="line">LOAD DATA</div><div class="line">INFILE ldr_case7.dat</div><div class="line">TRUNCATE INTO TABLE BONUS</div><div class="line">FIELDS TERMINATED BY ","</div><div class="line">(ENAME,XCOL FILLER,JOB,SAL)</div><div class="line">执行sqlldr命令，并查看结果</div><div class="line"></div><div class="line">--sqlldr命令</div><div class="line">[oracle@cancer ~]$ sqlldr scott/tiger control=ldr_case7.ctl </div><div class="line">Commit point reached - logical record count 14</div><div class="line"></div><div class="line">--查看结果</div><div class="line">[oracle@cancer ~]$ sqlplus scott/tiger;</div><div class="line"><span class="meta">SQL&gt;</span><span class="bash"> select * from bonus;</span></div><div class="line">ENAME	   JOB		    SAL       COMM</div><div class="line"></div><div class="line">------</div><div class="line"></div><div class="line">SMITH	   CLERK	   1020</div><div class="line">ALLEN	   SALESMAN	   1930</div><div class="line">WARD	   SALESMAN	   1580</div><div class="line">JONES	   MANAGER	   3195</div><div class="line">MARTIN	   SALESMAN	   1580</div><div class="line">BLAKE	   MANAGER	   3180</div><div class="line">CLARK	   MANAGER	   2172</div><div class="line">SCOTT	   ANALYST	   3220</div><div class="line">KING	   PRESIDENT   4722</div><div class="line">TURNER	   SALESMAN	   1830</div><div class="line">ADAMS	   CLERK	   1320</div><div class="line"></div><div class="line">ENAME	   JOB		    SAL       COMM</div><div class="line"></div><div class="line">------</div><div class="line"></div><div class="line">JAMES	   CLERK	   1280</div><div class="line">FORD	   ANALYST	   3220</div><div class="line">MILLER	   CLERK	   1022</div><div class="line"></div><div class="line">14 rows selected.</div></pre></td></tr></table></figure>
+<h3 id="数据文件中的列比要导入的表中的列少"><a href="#数据文件中的列比要导入的表中的列少" class="headerlink" title="数据文件中的列比要导入的表中的列少"></a>数据文件中的列比要导入的表中的列少</h3><p>在前面几个例子中，数文件中的列比表中的列要少的环境中演示的，这说明列少不怕，关键是看控制文件中的配置。但是如果缺少的列必须赋值又怎么办呢？只需稍改下控制文件即可，直接指定COMM列，并赋初始值0(这里仍然引用ldr_case3.dat中的数据</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line">--控制文件</div><div class="line">[oracle@cancer ~]$ cat ldr_case4.ctl </div><div class="line">LOAD DATA</div><div class="line">INFILE ldr_case3.dat</div><div class="line">TRUNCATE INTO TABLE BONUS</div><div class="line">(</div><div class="line">ENAME position(1:5),</div><div class="line">JOB position(10:18),</div><div class="line">SAL position(23:26),</div><div class="line">COMM "0"</div><div class="line">)</div><div class="line">查看演示结果</div><div class="line">--sqlldr命令</div><div class="line">[oracle@cancer ~]$ sqlldr scott/tiger control=ldr_case4.ctl</div><div class="line">Commit point reached - logical record count 4</div><div class="line"></div><div class="line">--查看结果</div><div class="line"><span class="meta">SQL&gt;</span><span class="bash"> select * from bonus;</span></div><div class="line">ENAME	   JOB		    SAL       COMM</div><div class="line"></div><div class="line">------</div><div class="line"></div><div class="line">SMITH	   CLEAK	   3904 	 0</div><div class="line">ALLEN	   SALESMAN	   2891 	 0</div><div class="line">WARD	   SALESMAN	   3128 	 0</div><div class="line">KING	   PRESIDENT   2523 	 0</div><div class="line">COMM的值也可以根据其他列的值而定，修改控制文件如下</div><div class="line">--控制文件</div><div class="line">[oracle@cancer ~]$ cat ldr_case5.ctl </div><div class="line">LOAD DATA</div><div class="line">INFILE ldr_case3.dat</div><div class="line">TRUNCATE INTO TABLE BONUS</div><div class="line">(</div><div class="line">ENAME position(1:5),</div><div class="line">JOB position(10:18),</div><div class="line">SAL position(23:26),</div><div class="line">COMM "substr(:SAL,1,1)"</div><div class="line">)</div></pre></td></tr></table></figure>
+<p>sqlldr执行上述代码,结果如下，很明显发现COMM的值是根据SAL的值的第1位数字获得</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">--sqlldr命令</div><div class="line">[oracle@cancer ~]$ sqlldr scott/tiger control=ldr_case5.ctl </div><div class="line">Commit point reached - logical record count 4</div><div class="line"></div><div class="line">--执行结果</div><div class="line"><span class="meta">SQL&gt;</span><span class="bash"> select * from bonus;</span></div><div class="line">ENAME	   JOB		    SAL       COMM</div><div class="line"></div><div class="line">------</div><div class="line"></div><div class="line">SMITH	   CLEAK	   3904 	 3</div><div class="line">ALLEN	   SALESMAN	   2891 	 2</div><div class="line">WARD	   SALESMAN	   3128 	 3</div><div class="line">KING       PRESIDENT   2523      2</div></pre></td></tr></table></figure>
+<p>这里COMM列的值根据SAL列值而定，我们通过一个SQL中的函数substr取SAL值的第一列，赋予COMM列，当然这只是一个示例，DBA可以根据实际需求进行适当的 修改，通过SQL中的函数可以实现很多很有意思的转换，也许能够为你省下很大力气，而且如果现有函数无法实现，甚至可以通过PL/SQL编写自定义的函数，然后在sqlldr的 控制文件中调用，调用方式与系统自带函数方式完全相同，这样就可以根据需求对要加载 的列做审灵活的处理</p>
+<h3 id="加载的数据中有换行符"><a href="#加载的数据中有换行符" class="headerlink" title="加载的数据中有换行符"></a>加载的数据中有换行符</h3><p><a href="https://blog.csdn.net/u011364306/article/details/50593546" target="_blank" rel="external">CSDN加载数据中又换行符的处理方法</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Oracle/" rel="tag"># Oracle</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/15/Windows-Office激活教程/" rel="next" title="Windows&Office激活教程">
+                <i class="fa fa-chevron-left"></i> Windows&Office激活教程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="DF104" />
+          <p class="site-author-name" itemprop="name">DF104</p>
+           
+              <p class="site-description motion-element" itemprop="description">ChongQing,China</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/df104" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/2020336205?refer_flag=1005050008_&is_all=1" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/li1042062797" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                    
+                      Twitter
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=nfH0rK2pr62rr6qkqt3s7LP_8vA" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+		<div id="music163player">
+    <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=86 src="//music.163.com/outchain/player?type=2&id=435948605&auto=1&height=66">
+    </iframe>
+</div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建控制文件"><span class="nav-number">1.</span> <span class="nav-text">创建控制文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#导入语句"><span class="nav-number">2.</span> <span class="nav-text">导入语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#导入方式"><span class="nav-number">3.</span> <span class="nav-text">导入方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sqlloader命令帮助信息"><span class="nav-number">4.</span> <span class="nav-text">sqlloader命令帮助信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#导入提速"><span class="nav-number">5.</span> <span class="nav-text">导入提速</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Direct参数，让速度更快一点"><span class="nav-number">6.</span> <span class="nav-text">使用Direct参数，让速度更快一点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#同一数据导入不同表"><span class="nav-number">7.</span> <span class="nav-text">同一数据导入不同表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据文件中的列比要导入的表中列多"><span class="nav-number">8.</span> <span class="nav-text">数据文件中的列比要导入的表中列多</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据文件中的列比要导入的表中的列少"><span class="nav-number">9.</span> <span class="nav-text">数据文件中的列比要导入的表中的列少</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加载的数据中有换行符"><span class="nav-number">10.</span> <span class="nav-text">加载的数据中有换行符</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Powered By DF104</span>
+</div>
+
+
+<div class="powered-by">
+   个人专属
+</div>
+
+<div class="theme-info">
+  博客 -DF104
+</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<!-- 小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+<!--卖萌-->
+<script type="text/javascript" src="/js/src/dytitle.js"></script>
+
+  </body>
+</html>
